@@ -9,7 +9,7 @@ template <typename K, typename V> class Map {
 public:
   Map()
       : values(new V[2]()), keys(new K[2]()), filled(new bool[2]()),
-        capacity(2), size(1){};
+        capacity(2), size(0){};
 
   ~Map() {
     delete[] values;
@@ -103,8 +103,6 @@ public:
     size_t ind = findIndex(key);
     if (ind == -1)
       return;
-    delete keys[ind];
-    delete values[ind];
     filled[ind] = false;
     --size;
   }
