@@ -9,6 +9,10 @@ template <typename T, typename Compare = std::less<T>> class Heap {
 public:
   Heap(Compare compare = Compare()) : compare(compare) {}
 
+  ~Heap() {
+    heap.clear();
+  }
+
   void push(const T &value) {
     heap.push_back(std::move(value));
     siftUp(heap.size() - 1);
