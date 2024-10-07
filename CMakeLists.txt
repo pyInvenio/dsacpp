@@ -9,5 +9,8 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(dsacpp ${SOURCES})
 
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
 target_include_directories(dsacpp PRIVATE include)
-target_link_libraries(dsacpp pthread)
+target_link_libraries(dsacpp pthread ${GTEST_LIBRARIES})

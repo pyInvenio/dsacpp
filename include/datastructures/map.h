@@ -4,6 +4,7 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <functional>
 
 template <typename K, typename V> class Map {
 public:
@@ -18,7 +19,7 @@ public:
   }
 
   bool find(const K &key) const {
-    size_t index = std::hash<K>(key) % capacity;
+    size_t index = std::hash<K>{}(key) % capacity;
     size_t i = 1;
     size_t original = index;
     while (filled[index] && keys[index] != key) {
@@ -31,7 +32,7 @@ public:
   }
 
   bool find(K &&key) const {
-    size_t index = std::hash<K>(key) % capacity;
+    size_t index = std::hash<K>{}(key) % capacity;
     size_t i = 1;
     size_t original = index;
     while (filled[index] && keys[index] != key) {
@@ -111,7 +112,7 @@ public:
     size_t ind = findIndex(key);
     if (ind == -1)
       return nullptr;
-    return values[ind];
+    return &values[ind];
   }
 
 private:
@@ -122,7 +123,7 @@ private:
   size_t size = 0;
 
   size_t getFreeIndex(const K &key) const {
-    size_t index = std::hash<K>(key) % capacity;
+    size_t index = std::hash<K>{}(key) % capacity;
     size_t i = 1;
     size_t original = index;
     while (filled[index]) {
@@ -134,7 +135,7 @@ private:
     return index;
   }
   size_t getFreeIndex(K &&key) const {
-    size_t index = std::hash<K>(std::move(key)) % capacity;
+    size_t index = std::hash<K>{}(std::move(key)) % capacity;
     size_t i = 1;
     size_t original = index;
     while (filled[index]) {
@@ -147,7 +148,7 @@ private:
   }
 
   size_t findIndex(const K &key) const {
-    size_t index = std::hash<K>(key) % capacity;
+    size_t index = std::hash<K>{}(key) % capacity;
     size_t i = 1;
     size_t original = index;
     while (filled[index] && keys[index] != key) {
@@ -160,7 +161,7 @@ private:
   }
 
   size_t findIndex(K &&key) const {
-    size_t index = std::hash<K>(std::move(key)) % capacity;
+    size_t index = std::hash<K>{}(std::move(key)) % capacity;
     size_t i = 1;
     size_t original = index;
     while (filled[index] && keys[index] != key) {
@@ -178,7 +179,7 @@ private:
     bool *newFilled = new bool[capacity * 2];
     for (int i = 0; i < capacity; ++i) {
       if (filled[i]) {
-        size_t newIndex = std::hash<K>(keys[i]) % (capacity * 2);
+        size_t newIndex = std::hash<K>{}(keys[i]) % (capacity * 2);
         size_t i = 1;
         while (newFilled[newIndex]) {
           newIndex += i * i % (capacity * 2);
